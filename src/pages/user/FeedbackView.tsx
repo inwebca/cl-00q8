@@ -3,6 +3,7 @@ import { FormContainer, TextareaAutosizeElement } from "react-hook-form-mui";
 import { Button, Stack } from "@mui/material";
 import { supabase } from "../../utils/supabase.ts";
 import { useAuth } from "../../context/AuthContext.tsx";
+import DOMPurify from "dompurify";
 
 type FormProps = {
   content: string;
@@ -13,8 +14,11 @@ const FeedbackView = () => {
   const defaultValues: FormProps = { content: "" };
 
   const onSubmit = async (data: FormProps) => {
+    //prévenir l'injection XSS, sanitize le contenu
+    const sanitizedContent = DOMPurify.sanitize(data.content);
+
     const res = await supabase.from("feedback").insert({
-      content: data.content,
+      content: sanitizedContent,
       user_id: user?.id,
     });
 

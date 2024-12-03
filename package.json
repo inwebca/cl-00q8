@@ -22,6 +22,7 @@
     "chart.js": "^4.4.6",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
+    "dompurify": "^3.2.2",
     "my-vue-app": "file:",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",

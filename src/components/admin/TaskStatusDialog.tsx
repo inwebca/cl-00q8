@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { TaskStatus } from "../../interfaces/TaskStatus.ts";
+import DOMPurify from "dompurify";
 
 interface TaskStatusDialogProps {
   open: boolean;
@@ -37,10 +38,16 @@ const TaskStatusDialog = (props: TaskStatusDialogProps) => {
     if (props.status) {
       result = await supabase
         .from("task_status")
-        .update({ name, description })
+        .update({
+          name: DOMPurify.sanitize(name),
+          description: DOMPurify.sanitize(description),
+        })
         .eq("id", props.status.id);
     } else {
-      result = await supabase.from("task_status").insert({ name, description });
+      result = await supabase.from("task_status").insert({
+        name: DOMPurify.sanitize(name),
+        description: DOMPurify.sanitize(description),
+      });
     }
 
     if (result.error) {

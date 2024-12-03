@@ -15,6 +15,7 @@ import { DatePickerElement } from "react-hook-form-mui/date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { supabase } from "../../utils/supabase.ts";
+import DOMPurify from "dompurify";
 
 interface IProps {
   open: boolean;
@@ -31,8 +32,8 @@ type FormProps = {
 const TaskDialog = (props: IProps) => {
   const onSubmit = async (data: FormProps) => {
     const res = await supabase.from("tasks").insert({
-      title: data.title,
-      description: data.description,
+      title: DOMPurify.sanitize(data.title),
+      description: DOMPurify.sanitize(data.description),
       due_date: data.due_date,
       status_id: 1,
     });

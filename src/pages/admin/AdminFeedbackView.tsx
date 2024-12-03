@@ -14,6 +14,7 @@ import { supabase } from "../../utils/supabase.ts";
 import { useEffect, useState } from "react";
 import { Feedback } from "../../interfaces/Feedback.ts";
 import CircularProgress from "@mui/material/CircularProgress";
+import DOMPurify from "dompurify";
 
 const AdminFeedbackView = () => {
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
@@ -65,7 +66,7 @@ const AdminFeedbackView = () => {
           <TableBody>
             {feedbacks.map((feedback) => (
               <TableRow key={feedback.id}>
-                <TableCell>{feedback.content}</TableCell>
+                <TableCell>{DOMPurify.sanitize(feedback.content)}</TableCell>
                 <TableCell>
                   {feedback.user.first_name} {feedback.user.last_name}
                 </TableCell>
